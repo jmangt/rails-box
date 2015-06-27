@@ -36,3 +36,4 @@ bower.json
 
 # Archivos vagrant
 .vagrant
+.DS_Store

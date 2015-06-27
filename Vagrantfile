@@ -22,11 +22,11 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "10.33.33.10"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -67,6 +67,9 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
      sudo apt-get update
 
+sudo apt-get install git
+# utilerias
+
 # instalar rvm manejador de versiones ruby
 curl -sSL https://rvm.io/mpapis.asc | sudo gpg --import -
 
@@ -80,7 +83,33 @@ rvm use --install 2.2.2
 
 rvm use 2.2.2 --default
 
+# instalar ruby on rails
+gem install bundler
 
+gem install rails
+
+# instalar oracle
+sudo apt-get install unzip -y
+sudo apt-get install libaio1 -y
+
+sudo mkdir /opt/oracle
+sudo cp /vagrant/oracle/* /opt/oracle
+
+sudo unzip /opt/oracle/instantclient-basic-linux.x64-12.1.0.2.0.zip -d /opt/oracle/
+sudo unzip /opt/oracle/instantclient-sdk-linux.x64-12.1.0.2.0.zip -d /opt/oracle/
+sudo unzip /opt/oracle/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip -d /opt/oracle/
+sudo rm /opt/oracle/*.zip
+
+cd /opt/oracle/instantclient_12_1
+ln -s libclntsh.so.12.1 libclntsh.so
+
+echo export LD_LIBRARY_PATH=/opt/oracle/instantclient_12_1 >> /home/vagrant/.bashrc
+echo export PATH="$PATH:$LD_LIBRARY_PATH" >> /home/vagrant/.bashrc
+
+source /home/vagrant/.bashrc
+
+# dependencias de rails
+sudo apt-get install nodejs -y
 
   SHELL
 end
